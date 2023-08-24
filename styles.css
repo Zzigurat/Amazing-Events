@@ -1,0 +1,47 @@
+#carouselExampleCaptions {
+    max-height: 30vh;
+    display: flex;
+    text-align: center;
+}
+
+.carousel-inner {
+    max-height: 30vh;
+}
+
+.carousel-item {
+    max-height: 30vh;
+}
+
+.carousel-item img {
+    max-height: 100%;
+}
+
+label {
+    color: rgb(173, 173, 173);
+}
+
+.icon {
+    height: 30px;
+    width: 30px;
+}
+
+.list-unstyled li a {
+    text-decoration: none;
+}
+
+.row {
+    width: 100%;
+}
+
+.gradiente {
+    background: rgb(3, 5, 50);
+    background: linear-gradient(90deg, rgba(3, 5, 50, 1) 0%, rgba(36, 42, 71, 1) 45%, rgba(47, 53, 96, 1) 98%);
+}
+
+footer {
+    background-color: aliceblue;
+}
+
+input::placeholder{
+    color: rgb(150, 150, 150) !important;
+}
