@@ -1,4 +1,4 @@
-#carouselExampleCaptions {
+#carouselExampleInterval {
     max-height: 30vh;
     display: flex;
     text-align: center;
@@ -10,11 +10,19 @@
 
 .carousel-item {
     max-height: 30vh;
+    position: relative;
 }
 
 .carousel-item img {
-    max-height: 100%;
+    max-height: 30vh;
+    object-fit: cover;
 }
+.carousel-caption{
+    position: absolute;
+    z-index: 1;
+}
+
+
 
 label {
     color: rgb(173, 173, 173);
@@ -34,14 +42,13 @@ label {
 }
 
 .gradiente {
-    background: rgb(3, 5, 50);
-    background: linear-gradient(90deg, rgba(3, 5, 50, 1) 0%, rgba(36, 42, 71, 1) 45%, rgba(47, 53, 96, 1) 98%);
+    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
 }
 
 footer {
-    background-color: aliceblue;
+    background-image: linear-gradient(to top, #bdc2e8 0%, #bdc2e8 1%, #e6dee9 100%);
 }
 
-input::placeholder{
+input::placeholder {
     color: rgb(150, 150, 150) !important;
 }
