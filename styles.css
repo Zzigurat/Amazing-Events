@@ -17,7 +17,8 @@
     max-height: 30vh;
     object-fit: cover;
 }
-.carousel-caption{
+
+.carousel-caption {
     position: absolute;
     z-index: 1;
 }
