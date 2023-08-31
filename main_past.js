@@ -25,7 +25,7 @@ function newCard(array) {
     <p class="card-text">${evento.description}</p>
     <div class="details d-flex align-items-center justify-content-around gap-5">
         <p class="mb-0">Price: $${evento.price}</p>
-        <a href="Details.html" class="btn btn-primary">Details</a>
+        <a href="Details.html?id=${evento._id}" class="btn btn-primary">Details</a>
     </div>
 </div>
 </div>`;
