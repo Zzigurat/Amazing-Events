@@ -5,7 +5,7 @@ let params = new URLSearchParams(queryString);       /* Me permite manipular los
 
 let id = params.get('id');    /* Me consigue el id de mi URL */
 
-let evento = data.events.find(event => event._id == id);      /* Busca en el array data el id que coincida con el id de mi URL
+let evento = data.events.find(event => event._id == id);      /* Busca en el array data.events el id que coincida con el id de mi URL
                                                                  y me devuelve el objeto que contenga el id*/
 console.log(evento)
 let container = document.getElementById('detailsContainer');
