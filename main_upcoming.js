@@ -1,11 +1,12 @@
 let currentDate = "2023-01-01";
 let upcomingData = data.events.filter(evento => Date.parse(evento.date) > Date.parse(currentDate))
-
 let contenedorCartas = document.getElementById('card-container');
 let checkbox = document.getElementById('_checklist');
 let searchBar = document.getElementById('searchBar');
 let arrayNombresEventos = upcomingData.map(evento => evento.category);
-let submitBtn= document.getElementById('submitBtn');
+let eventosUnicos = [...new Set(arrayNombresEventos)];
+let submitBtn = document.getElementById('submitBtn');
+let searchBarInput = document.querySelector('.form-control');
 
 function crearCheckbox(array) {
   let template = '';
@@ -21,37 +22,16 @@ function crearCheckbox(array) {
 };
 submitBtn.addEventListener('click', (e) => {
   e.preventDefault()
-  });
-
-checkbox.innerHTML = crearCheckbox(arrayNombresEventos);
-
-checkbox.addEventListener('change', (e) => {
-  let nodeList = document.querySelectorAll('input[type="checkbox"]:checked');
-  let arrayMarcados = Array.from(nodeList).map(input => input.value);
-  let arrayFiltrado = upcomingData.filter(evento => arrayMarcados.includes(evento.category));
-  newCard(arrayFiltrado);
-  cardsIniciales(upcomingData);
-})
-
-cardsIniciales(upcomingData);
-
-searchBar.addEventListener('keyup', (e) => {
-  e.preventDefault();
-  let nodeList = document.querySelectorAll('input[type="checkbox"]:checked');
-  let arrayMarcados = Array.from(nodeList).map(input => input.value);
-  let searchBarInput = document.querySelector('.form-control');
-  let busqueda = searchBarInput.value;
-  let busquedaFiltrada = upcomingData.filter(evento => evento.name.toLowerCase().includes(busqueda.toLowerCase()))
-  console.log(busquedaFiltrada);
-  let arrayFiltrado = busquedaFiltrada.filter(evento => arrayMarcados.includes(evento.category));
-  newCard(arrayFiltrado);
 });
-function cardsIniciales(array) {
-  if (contenedorCartas.innerHTML.trim() === "") {
-    newCard(array);
-  }
-}
-function newCard(array) {
+
+checkbox.innerHTML = crearCheckbox(eventosUnicos);
+
+
+imprimirCard(cardContent(upcomingData), contenedorCartas);
+
+
+
+function cardContent(array) {
   let content = '';
   for (let evento of array) {
     content += `<div class="card mb-3" style="width: 18rem;">
@@ -71,9 +51,43 @@ function newCard(array) {
 </div>
 </div>`;
   }
-  contenedorCartas.innerHTML = content;
+  return content;
+}
+
+function imprimirCard(string, elementoHTML) {
+  elementoHTML.innerHTML = string;
 }
 
 
 
+function filtrarPorBusqueda(array, input) {
+  let stringBusqueda = input.value;
+  let busquedaFiltrada = array.filter(evento => evento.name.toLowerCase().includes(stringBusqueda.toLowerCase()));
+  return busquedaFiltrada;
+}
+function filtrarPorCheck(array) {
+  let nodeList = document.querySelectorAll('input[type="checkbox"]:checked');
+  let arrayMarcados = Array.from(nodeList).map(input => input.value);
+  if (arrayMarcados.length !== 0) {
+    let filtradosPorCheck = array.filter(evento => arrayMarcados.includes(evento.category));
+    return filtradosPorCheck;
+  } else {
+    return upcomingData;
+  }
+}
+function filtrosCombinados(array, input) {
+  let filtroChecks = filtrarPorCheck(array);
+  let filtroChecksYBusqueda = filtrarPorBusqueda(filtroChecks, input);
+  return filtroChecksYBusqueda;
+}
+searchBar.addEventListener('keyup', (e) => {
+  let returnCombinado = filtrosCombinados(upcomingData, searchBarInput);
+  imprimirCard(cardContent(returnCombinado), contenedorCartas);
+}
+)
+
+checkbox.addEventListener('change', (e) => {
+  let returnCombinado = filtrosCombinados(upcomingData, searchBarInput);
+  imprimirCard(cardContent(returnCombinado), contenedorCartas);
+})
 
