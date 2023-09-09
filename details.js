@@ -5,12 +5,17 @@ let params = new URLSearchParams(queryString);       /* Me permite manipular los
 
 let id = params.get('id');    /* Me consigue el id de mi URL */
 
-let evento = data.events.find(event => event._id == id);      /* Busca en el array data.events el id que coincida con el id de mi URL
-                                                                 y me devuelve el objeto que contenga el id*/
-console.log(evento)
 let container = document.getElementById('detailsContainer');
-container.innerHTML = 
-`<div class="row g-0" style="height: 100%;">
+
+
+fetch('https://mindhub-xj03.onrender.com/api/amazing')
+    .then(response => response.json())
+    .then(data => {
+        let evento = data.events.find(event => event._id == id); /* Busca en el array data.events el id que coincida con el id de mi URL
+                                                             y me devuelve el objeto que contenga el id*/
+
+        container.innerHTML =
+            `<div class="row g-0" style="height: 100%;">
     <div class="col-md-6">
         <img src=${evento.image} class="img-fluid rounded-start"
             alt="imagen_evento" style="height: 100%; object-fit: cover;">
@@ -27,4 +32,9 @@ container.innerHTML =
             </ul>
         </div>
     </div>
-</div>`
+</div>
+`
+    })
+    .catch(error => console.log(error));
+
+

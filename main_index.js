@@ -1,14 +1,31 @@
 let currentDate = "2023-01-01";
-let homeData = data.events.map(evento => evento);
-
 let contenedorCartas = document.getElementById('card-container');
 let checkbox = document.getElementById('_checklist');
 let searchBar = document.getElementById('searchBar');
-let arrayNombresEventos = homeData.map(evento => evento.category);
-let eventosUnicos = [...new Set(arrayNombresEventos)];
 let submitBtn = document.getElementById('submitBtn');
 let searchBarInput = document.querySelector('.form-control');
-
+fetch('https://mindhub-xj03.onrender.com/api/amazing')
+  .then(response => response.json())
+  .then(data => {
+    let homeData = data.events.map(evento => evento);
+    let arrayNombresEventos = homeData.map(evento => evento.category);
+    let eventosUnicos = [...new Set(arrayNombresEventos)];
+    checkbox.innerHTML = crearCheckbox(eventosUnicos);
+    imprimirCard(cardContent(homeData), contenedorCartas);
+    searchBar.addEventListener('keyup', (e) => {
+      let returnCombinado = filtrosCombinados(homeData, searchBarInput);
+      imprimirCard(cardContent(returnCombinado), contenedorCartas);
+    }
+    )
+    checkbox.addEventListener('change', (e) => {
+      let returnCombinado = filtrosCombinados(homeData, searchBarInput);
+      imprimirCard(cardContent(returnCombinado), contenedorCartas);
+    })
+    submitBtn.addEventListener('click', (e) => {
+      e.preventDefault()
+    });
+  })
+  .catch(error => console.log(error));
 function crearCheckbox(array) {
   let template = '';
   for (let evento of array) {
@@ -21,21 +38,11 @@ function crearCheckbox(array) {
   }
   return template;
 };
-submitBtn.addEventListener('click', (e) => {
-  e.preventDefault()
-});
-
-checkbox.innerHTML = crearCheckbox(eventosUnicos);
-
-
-imprimirCard(cardContent(homeData), contenedorCartas);
-
-
-
 function cardContent(array) {
   let content = '';
   for (let evento of array) {
-    content += `<div class="card mb-3" style="width: 18rem;">
+    content +=
+      `<div class="card mb-3 carta" style="width: 18rem;">
 <img src="${evento.image}" class="card-img-top" style="height: 12rem" alt="imagen_evento">
 <div class="card-body d-flex flex-column justify-content-between">
 <label class="container">
@@ -46,21 +53,23 @@ function cardContent(array) {
     <h6 class="card-subtitle mb-2 text-body-secondary">${evento.category}</h6>
     <p class="card-text">${evento.description}</p>
     <div class="details d-flex align-items-center justify-content-around gap-5">
-        <p class="mb-0">Price: $${evento.price}</p>
+        <p class="mb-0">Price<br><b>$${evento.price}</b></p>
         <a href="Details.html?id=${evento._id}" class="btn btn-primary">Details</a>
     </div>
 </div>
-</div>`;
+</div>
+`;
   }
   return content;
 }
 
 function imprimirCard(string, elementoHTML) {
-  elementoHTML.innerHTML = string;
+  if (string !== '') {
+    elementoHTML.innerHTML = string;
+  } else elementoHTML.innerHTML = `<div class="alert alert-danger" role="alert">
+No se han encontrado coincidencias.
+</div>`
 }
-
-
-
 function filtrarPorBusqueda(array, input) {
   let stringBusqueda = input.value;
   let busquedaFiltrada = array.filter(evento => evento.name.toLowerCase().includes(stringBusqueda.toLowerCase()));
@@ -73,7 +82,7 @@ function filtrarPorCheck(array) {
     let filtradosPorCheck = array.filter(evento => arrayMarcados.includes(evento.category));
     return filtradosPorCheck;
   } else {
-    return homeData;
+    return array;
   }
 }
 function filtrosCombinados(array, input) {
@@ -81,18 +90,3 @@ function filtrosCombinados(array, input) {
   let filtroChecksYBusqueda = filtrarPorBusqueda(filtroChecks, input);
   return filtroChecksYBusqueda;
 }
-searchBar.addEventListener('keyup', (e) => {
-  let returnCombinado = filtrosCombinados(homeData, searchBarInput);
-  imprimirCard(cardContent(returnCombinado), contenedorCartas);
-}
-)
-
-checkbox.addEventListener('change', (e) => {
-  let returnCombinado = filtrosCombinados(homeData, searchBarInput);
-  imprimirCard(cardContent(returnCombinado), contenedorCartas);
-})
-
-
-
-
-

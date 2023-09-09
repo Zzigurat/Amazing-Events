@@ -1,12 +1,32 @@
 let currentDate = "2023-01-01";
-let pastData = data.events.filter(evento => Date.parse(evento.date) < Date.parse(currentDate));
 let contenedorCartas = document.getElementById('card-container');
 let checkbox = document.getElementById('_checklist');
 let searchBar = document.getElementById('searchBar');
-let arrayNombresEventos = pastData.map(evento => evento.category);
-let eventosUnicos = [...new Set(arrayNombresEventos)];
 let submitBtn = document.getElementById('submitBtn');
 let searchBarInput = document.querySelector('.form-control');
+fetch('https://mindhub-xj03.onrender.com/api/amazing')
+  .then(response => response.json())
+  .then(data => {
+    let pastData = data.events.filter(evento => Date.parse(evento.date) < Date.parse(currentDate));
+    let arrayNombresEventos = pastData.map(evento => evento.category);
+    let eventosUnicos = [...new Set(arrayNombresEventos)];
+    checkbox.innerHTML = crearCheckbox(eventosUnicos);
+    imprimirCard(cardContent(pastData), contenedorCartas);
+    searchBar.addEventListener('keyup', (e) => {
+      let returnCombinado = filtrosCombinados(pastData, searchBarInput);
+      imprimirCard(cardContent(returnCombinado), contenedorCartas);
+    }
+    )
+    checkbox.addEventListener('change', (e) => {
+      let returnCombinado = filtrosCombinados(pastData, searchBarInput);
+      imprimirCard(cardContent(returnCombinado), contenedorCartas);
+    })
+    submitBtn.addEventListener('click', (e) => {
+      e.preventDefault()
+    });
+  })
+  .catch(error => console.log(error));
+
 
 function crearCheckbox(array) {
   let template = '';
@@ -20,22 +40,10 @@ function crearCheckbox(array) {
   }
   return template;
 };
-
-submitBtn.addEventListener('click', (e) => {
-  e.preventDefault()
-});
-
-checkbox.innerHTML = crearCheckbox(eventosUnicos);
-
-
-imprimirCard(cardContent(pastData), contenedorCartas);
-
-
-
 function cardContent(array) {
   let content = '';
   for (let evento of array) {
-    content += `<div class="card mb-3" style="width: 18rem;">
+    content += `<div class="card mb-3 carta" style="width: 18rem;">
 <img src="${evento.image}" class="card-img-top" style="height: 12rem" alt="imagen_evento">
 <div class="card-body d-flex flex-column justify-content-between">
 <label class="container">
@@ -54,13 +62,13 @@ function cardContent(array) {
   }
   return content;
 }
-
 function imprimirCard(string, elementoHTML) {
-  elementoHTML.innerHTML = string;
+  if (string !== '') {
+    elementoHTML.innerHTML = string;
+  } else elementoHTML.innerHTML = `<div class="alert alert-danger" role="alert">
+No se han encontrado coincidencias.
+</div>`
 }
-
-
-
 function filtrarPorBusqueda(array, input) {
   let stringBusqueda = input.value;
   let busquedaFiltrada = array.filter(evento => evento.name.toLowerCase().includes(stringBusqueda.toLowerCase()));
@@ -73,7 +81,7 @@ function filtrarPorCheck(array) {
     let filtradosPorCheck = array.filter(evento => arrayMarcados.includes(evento.category));
     return filtradosPorCheck;
   } else {
-    return pastData;
+    return array;
   }
 }
 function filtrosCombinados(array, input) {
@@ -81,14 +89,3 @@ function filtrosCombinados(array, input) {
   let filtroChecksYBusqueda = filtrarPorBusqueda(filtroChecks, input);
   return filtroChecksYBusqueda;
 }
-searchBar.addEventListener('keyup', (e) => {
-  let returnCombinado = filtrosCombinados(pastData, searchBarInput);
-  imprimirCard(cardContent(returnCombinado), contenedorCartas);
-}
-)
-
-checkbox.addEventListener('change', (e) => {
-  let returnCombinado = filtrosCombinados(pastData, searchBarInput);
-  imprimirCard(cardContent(returnCombinado), contenedorCartas);
-})
-

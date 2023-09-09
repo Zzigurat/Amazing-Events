@@ -61,11 +61,11 @@
       color: rgb(150, 150, 150) !important;
   }
 
-  .card {
+  .carta {
       transition: transform 0.3s ease;
   }
 
-  .card:hover {
+  .carta:hover {
       box-shadow: 5px 6px 6px 2px #fb8dff;
       transform: scale(1.05);
   }
