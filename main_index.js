@@ -43,17 +43,17 @@ function cardContent(array) {
   for (let evento of array) {
     content +=
       `<div class="card mb-3 carta" style="width: 18rem;">
-<img src="${evento.image}" class="card-img-top" style="height: 12rem" alt="imagen_evento">
+      <img src="${evento.image}" class="card-img-top" style="height: 12rem" alt="imagen_evento">
+      <label class="container">
+          <input type="checkbox" class="checkbox" id="like">
+          <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path></svg>
+      </label>
 <div class="card-body d-flex flex-column justify-content-between">
-<label class="container">
-  <input type="checkbox" class="checkbox" id="like">
-  <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path></svg>
-</label>
-    <h5 class="card-title">${evento.name}</h5>
+    <h5 class="card-title" style="font-weight: bold">${evento.name}</h5>
     <h6 class="card-subtitle mb-2 text-body-secondary">${evento.category}</h6>
     <p class="card-text">${evento.description}</p>
-    <div class="details d-flex align-items-center justify-content-around gap-5">
-        <p class="mb-0">Price<br><b>$${evento.price}</b></p>
+    <div class="details d-flex align-items-center justify-content-between">
+        <p class="mb-0" style="font-size: 1.1rem">Price<br><b>$${evento.price}</b></p>
         <a href="Details.html?id=${evento._id}" class="btn btn-primary">Details</a>
     </div>
 </div>

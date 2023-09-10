@@ -97,10 +97,9 @@
       height: 30px;
       width: 30px;
       transition: all 0.3s;
-      fill: #504f4f;
+      fill: #fcb8d5;
   }
-
-  .container svg:hover {
+   .container svg:hover {
       transform: scale(1.1);
   }
 
@@ -111,7 +110,8 @@
 
   #Layer_1 {
       position: absolute;
-      left: 14.2rem;
+      left: 15.5rem;
+      top: 0.5rem;
   }
 
   .display-1 {
@@ -129,7 +129,6 @@
     width: 96vw;
     margin-left: 1vw;
 }
-
   @media screen and (max-width: 632px) {
       #card-container {
           justify-content: space-around !important;
