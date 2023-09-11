@@ -26,8 +26,6 @@ fetch('https://mindhub-xj03.onrender.com/api/amazing')
     });
   })
   .catch(error => console.log(error));
-
-
 function crearCheckbox(array) {
   let template = '';
   for (let evento of array) {
